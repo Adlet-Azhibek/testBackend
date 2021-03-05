@@ -10,12 +10,8 @@ var fs = require('fs');
 var cors = require('cors');
 const PORT = 8007;
 const fileUpload = require('express-fileupload');
-//const busboyBodyParser = require('busboy-body-parser');
-//const Busboy = require('busboy');
-//const utf8 = require('utf8');
 
 const cookieParser = require('cookie-parser');
-//const expressJwt = require('express-jwt');
 const jwt = require('jsonwebtoken');
 const accessTokenSecret = process.env.accessTokenSecret;
 const refreshTokenSecret = process.env.refreshTokenSecret;
@@ -51,7 +47,6 @@ app.use(fileUpload({
             fileSize: 50 * 1024 * 1024
         } //50mb
     }));
-//app.use(busboyBodyParser());
 
 app.post('/signin', cors(), (req, res) => {
     var email = req.body.email;
@@ -282,10 +277,6 @@ app.post('/signup', async(req, res) => {
                             value: err2
                         });
                     } else {
-                        /*res.status(200).send({
-                        status: 'success',
-                        value: results2
-                        });*/
                         var user = {
                             id: results2.insertId
                         }
@@ -507,7 +498,6 @@ app.put('/file/update/:id', checkAccessToken, async(req, res) => {
             });
         } else {
             if (results[0] && results[0].location) {
-                //res.download(results[0].location);
                 removeFile(results, function (err, result) { //удаляем старый файл
                     if (err) {
                         res.status(500).send({
@@ -539,7 +529,6 @@ app.put('/file/update/:id', checkAccessToken, async(req, res) => {
             }
         }
     });
-    //res.send({});
 });
 
 app.get('/info', checkAccessToken, async(req, res) => {
@@ -574,15 +563,6 @@ app.get('/logout', async(req, res) => {
                     value: err5
                 });
             } else {
-                //mongoFuncs.updateManyDocuments
-                /*res.cookie('refreshToken', refreshToken, { //записываем в куки
-                expires: false,
-                httpOnly: true,
-                domain: 'localhost:' + PORT,
-                //domain: '/',
-                path: '/auth',
-                secure: true
-                });*/
                 res.clearCookie('refreshToken');
                 res.status(200).send({
                     status: 'success',
